@@ -9,10 +9,10 @@ router.post('/', (req, res) => {
 
   db.query(query, [email, photo, title, detail], (err, results) => {
     if (err) {
-      console.error('Error inserting post:', err);
-      return res.status(500).send('Database error');
+      console.error('게시물 생성 오류:', err);
+      return res.status(500).send('데이터베이스 오류');
     }
-    res.status(201).send('Post created successfully');
+    res.status(201).send('게시물 생성 성공');
   });
 });
 
@@ -20,7 +20,7 @@ router.post('/edit', (req, res) => {
   const { id, title, detail, photo } = req.body;
 
   if (!id) {
-    return res.status(400).send('Post ID is required');
+    return res.status(400).send('게시글 아이디 필요');
   }
 
   const query = `
@@ -32,13 +32,13 @@ router.post('/edit', (req, res) => {
 
   db.query(query, [title, detail, photo, id, email], (err, results) => {
     if (err) {
-      console.error('Error updating post:', err);
-      return res.status(500).send('Database error');
+      console.error('게시글 수정 중 오류:', err);
+      return res.status(500).send('데이터베이스 오류');
     }
     if (results.affectedRows === 0) {
-      return res.status(404).send('Post not found or not authorized');
+      return res.status(404).send('게시물 찾기 실패 또는 권한 없음');
     }
-    res.send('Post updated successfully');
+    res.send('게시물 수정 성공');
   });
 });
 
@@ -46,7 +46,7 @@ router.post('/delete', (req, res) => {
   const { id } = req.body;
 
   if (!id) {
-    return res.status(400).send('Post ID is required');
+    return res.status(400).send('게시물 아이디 필요');
   }
 
   const query = 'DELETE FROM post WHERE id = ? AND email = ?';
@@ -54,13 +54,13 @@ router.post('/delete', (req, res) => {
 
   db.query(query, [id, email], (err, results) => {
     if (err) {
-      console.error('Error deleting post:', err);
-      return res.status(500).send('Database error');
+      console.error('게시물 삭제 중 오류:', err);
+      return res.status(500).send('데이터베이스 오류');
     }
     if (results.affectedRows === 0) {
-      return res.status(404).send('Post not found or not authorized');
+      return res.status(404).send('게시글 찾기 실패 또는 권한 없음');
     }
-    res.send('Post deleted successfully');
+    res.send('게시글 삭제 성공');
   });
 });
 
