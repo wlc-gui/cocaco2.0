@@ -1,5 +1,7 @@
 const express = require('express');
 const session = require('express-session');
+const path = require('path');
+
 const mainRouter = require('./routes/main');
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
@@ -13,9 +15,11 @@ app.use(session({
   saveUninitialized: true
 }));
 
+app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use('/api', mainRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/profile', profileRouter);
+app.use('/api/profile', profileRouter); 
 app.use('/api/post', postRouter);
 
 app.listen(3000, () => {
